@@ -12,6 +12,5 @@ namespace MovieStore.Data.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public List<Movie> DirectedMovies { get; set; }
     }
 }

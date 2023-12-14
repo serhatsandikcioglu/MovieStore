@@ -8,7 +8,7 @@ using MovieStore.Service.Interfaces;
 
 namespace MovieStore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/movies")]
     [ApiController]
     public class MovieController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace MovieStore.API.Controllers
             List<MovieViewModel> movieViewModels = _movieService.GetAll(sort, page, size);
             return Ok(movieViewModels);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}/actors")]
         public IActionResult GetById(int id)
         {
             bool movieExist = _movieService.IsExist(id);

@@ -14,7 +14,7 @@ namespace MovieStore.Service.Interfaces
     {
         List<ActorViewModel> GetAll(string? sort, int page, int size);
         void Delete(int id);
-        void Update(ActorUpdateDTO actorUpdateDTO);
+        void Update(int id, ActorUpdateDTO actorUpdateDTO);
         ActorViewModel Add(ActorCreateDTO actorCreateDTO);
         ActorViewModel GetById(int id);
         void Patch(int id, JsonPatchDocument<Actor> patchDoc);

@@ -14,8 +14,9 @@ namespace MovieStore.Data.ViewModels
         public string Name { get; set; }
         public int Year { get; set; }
         public Category Category { get; set; }
-        public Director Director { get; set; }
-        public List<Actor> Actors { get; set; }
+        public int DirectorId { get; set; }
+        public DirectorViewModel Director { get; set; }
+        public List<ActorViewModel> Actors { get; set; }
         public decimal Price { get; set; }
     }
 }

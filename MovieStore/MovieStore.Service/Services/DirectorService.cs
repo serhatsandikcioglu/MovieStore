@@ -53,9 +53,10 @@ namespace MovieStore.Service.Services
             return directorViewModel;
         }
 
-        public void Update(DirectorUpdateDTO directorUpdateDTO)
+        public void Update(int id ,DirectorUpdateDTO directorUpdateDTO)
         {
             Director director = _mapper.Map<Director>(directorUpdateDTO);
+            director.Id = id;
             _unitOfWork.DirectorRepository.Update(director);
             _unitOfWork.SaveChanges();
         }

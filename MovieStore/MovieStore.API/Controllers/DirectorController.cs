@@ -10,7 +10,7 @@ using System.IO;
 
 namespace MovieStore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/directors")]
     [ApiController]
     public class DirectorController : ControllerBase
     {
@@ -50,8 +50,7 @@ namespace MovieStore.API.Controllers
             bool directorExist = _directorService.IsExist(id);
             if (directorExist)
             {
-                directorUpdateDTO.Id = id;
-                _directorService.Update(directorUpdateDTO);
+                _directorService.Update(id, directorUpdateDTO);
                 return Ok();
             }
             return NotFound();

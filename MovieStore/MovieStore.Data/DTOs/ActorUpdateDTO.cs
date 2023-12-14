@@ -10,7 +10,6 @@ namespace MovieStore.Data.DTOs
 {
     public class ActorUpdateDTO
     {
-        [JsonIgnore]public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
     }

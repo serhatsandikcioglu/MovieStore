@@ -16,8 +16,12 @@ namespace MovieStore.Data.Entities
         public Category Category { get; set; }
         public int DirectorId { get; set; }
         public Director Director { get; set; }
-        public List<int> ActorsId { get; set; }
         public List<Actor> Actors { get; set; }
         public decimal Price { get; set; }
+    public Movie()
+    {
+        Actors = new List<Actor>();
     }
+    }
+
 }

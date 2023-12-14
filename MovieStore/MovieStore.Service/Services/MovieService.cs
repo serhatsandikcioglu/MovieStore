@@ -27,6 +27,14 @@ namespace MovieStore.Service.Services
         public MovieViewModel Add(MovieCreateDTO movieCreateDTO)
         {
             Movie movie = _mapper.Map<Movie>(movieCreateDTO);
+            foreach (var actorId in movieCreateDTO.ActorsId)
+            {
+               Actor actor = _unitOfWork.ActorRepository.GetById(actorId);
+                if (actor != null)
+                {
+                movie.Actors.Add(actor);
+                }
+            }
             _unitOfWork.MovieRepository.Add(movie);
             _unitOfWork.SaveChanges();
             MovieViewModel movieViewModel = _mapper.Map<MovieViewModel>(movie);

@@ -11,12 +11,11 @@ namespace MovieStore.Data.DTOs
 {
     public class MovieUpdateDTO
     {
-        [JsonIgnore] public int Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
-        public Category Category{ get; set; }
+        public Category Category { get; set; }
         public int DirectorId { get; set; }
-        public List<int> ActorsId { get; set; }
         public decimal Price { get; set; }
     }
 }

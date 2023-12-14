@@ -48,8 +48,7 @@ namespace MovieStore.API.Controllers
             bool actorExist = _actorService.IsExist(id);
             if (actorExist)
             {
-                actorUpdateDTO.Id = id;
-                _actorService.Update(actorUpdateDTO);
+                _actorService.Update(id,actorUpdateDTO);
                 return Ok();
             }
             return NotFound();

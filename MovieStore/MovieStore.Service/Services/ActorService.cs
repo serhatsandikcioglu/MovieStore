@@ -54,9 +54,10 @@ namespace MovieStore.Service.Services
             return actorViewModel;
         }
 
-        public void Update(ActorUpdateDTO actorUpdateDTO)
+        public void Update(int id ,ActorUpdateDTO actorUpdateDTO)
         {
             Actor actor = _mapper.Map<Actor>(actorUpdateDTO);
+            actor.Id = id;
             _unitOfWork.ActorRepository.Update(actor);
             _unitOfWork.SaveChanges();
         }

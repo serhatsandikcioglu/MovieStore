@@ -11,7 +11,5 @@ namespace MovieStore.Data.DTOs
     {
         public int AppUserId { get; set; }
         public int MovieId { get; set; }
-        public decimal Price { get; set; }
-        public DateTime CreatedDate { get; set; }
     }
 }

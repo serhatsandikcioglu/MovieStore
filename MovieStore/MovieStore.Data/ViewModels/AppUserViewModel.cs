@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MovieStore.Data.ViewModels
 {
-    internal class CustomerViewModel
+    internal class AppUserViewModel
     {
     }
 }
