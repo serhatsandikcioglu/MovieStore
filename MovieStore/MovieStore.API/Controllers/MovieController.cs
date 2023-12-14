@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MovieStore.Data.DTOs;
@@ -14,11 +15,15 @@ namespace MovieStore.API.Controllers
     {
         private readonly IMovieService _movieService;
         private readonly IDirectorService _directorService;
+        private readonly IValidator<MovieCreateDTO> _createValidator;
+        private readonly IValidator<MovieUpdateDTO> _updateValidator;
 
-        public MovieController(IMovieService movieService, IDirectorService directorService)
+        public MovieController(IMovieService movieService, IDirectorService directorService, IValidator<MovieCreateDTO> createValidator, IValidator<MovieUpdateDTO> updateValidator)
         {
             _movieService = movieService;
             _directorService = directorService;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
         [HttpGet]
         public IActionResult GetAll([FromQuery] string? sort, int page = 1, int size = 10)
@@ -40,6 +45,11 @@ namespace MovieStore.API.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] MovieCreateDTO movieCreateDTO)
         {
+            var validateResult = _createValidator.Validate(movieCreateDTO);
+            if (!validateResult.IsValid)
+            {
+                return BadRequest();
+            }
             bool directorExist = _directorService.IsExist(movieCreateDTO.DirectorId);
             if (directorExist)
             {
@@ -51,6 +61,11 @@ namespace MovieStore.API.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] MovieUpdateDTO movieUpdateDTO)
         {
+            var validateResult = _updateValidator.Validate(movieUpdateDTO);
+            if (!validateResult.IsValid)
+            {
+                return BadRequest();
+            }
             bool movieExist = _movieService.IsExist(id);
             if (movieExist)
             {

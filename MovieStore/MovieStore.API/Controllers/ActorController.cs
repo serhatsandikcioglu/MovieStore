@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MovieStore.Data.DTOs;
@@ -14,10 +15,14 @@ namespace MovieStore.API.Controllers
     public class ActorController : ControllerBase
     {
         private readonly IActorService _actorService;
+        private readonly IValidator<ActorCreateDTO> _createValidator;
+        private readonly IValidator<ActorUpdateDTO> _updateValidator;
 
-        public ActorController(IActorService actorService)
+        public ActorController(IActorService actorService, IValidator<ActorCreateDTO> createValidator, IValidator<ActorUpdateDTO> updateValidator)
         {
             _actorService = actorService;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
         [HttpGet]
         public IActionResult GetAll([FromQuery] string? sort, int page = 1, int size = 10)
@@ -39,12 +44,22 @@ namespace MovieStore.API.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] ActorCreateDTO actorCreateDTO)
         {
+            var validateResult = _createValidator.Validate(actorCreateDTO);
+            if (!validateResult.IsValid)
+            {
+                return BadRequest();
+            }
             ActorViewModel actorViewModel = _actorService.Add(actorCreateDTO);
             return CreatedAtAction(nameof(GetById), new { id = actorViewModel.Id }, actorViewModel);
         }
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] ActorUpdateDTO actorUpdateDTO)
         {
+            var validateResult = _updateValidator.Validate(actorUpdateDTO);
+            if (!validateResult.IsValid)
+            {
+                return BadRequest();
+            }
             bool actorExist = _actorService.IsExist(id);
             if (actorExist)
             {

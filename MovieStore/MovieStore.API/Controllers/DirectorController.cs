@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MovieStore.Data.DTOs;
@@ -15,10 +16,14 @@ namespace MovieStore.API.Controllers
     public class DirectorController : ControllerBase
     {
         private readonly IDirectorService _directorService;
+        private readonly IValidator<DirectorCreateDTO> _createValidator;
+        private readonly IValidator<DirectorUpdateDTO> _updateValidator;
 
-        public DirectorController(IDirectorService directorService)
+        public DirectorController(IDirectorService directorService, IValidator<DirectorCreateDTO> createValidator, IValidator<DirectorUpdateDTO> updateValidator)
         {
             _directorService = directorService;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         [HttpGet]
@@ -41,12 +46,22 @@ namespace MovieStore.API.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] DirectorCreateDTO directorCreateDTO)
         {
+            var validateResult = _createValidator.Validate(directorCreateDTO);
+            if (!validateResult.IsValid)
+            {
+                return BadRequest();
+            }
             DirectorViewModel directorViewModel = _directorService.Add(directorCreateDTO);
             return CreatedAtAction(nameof(GetById), new { id = directorViewModel.Id }, directorViewModel);
         }
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] DirectorUpdateDTO directorUpdateDTO)
         {
+            var validateResult = _updateValidator.Validate(directorUpdateDTO);
+            if (!validateResult.IsValid)
+            {
+                return BadRequest();
+            }
             bool directorExist = _directorService.IsExist(id);
             if (directorExist)
             {

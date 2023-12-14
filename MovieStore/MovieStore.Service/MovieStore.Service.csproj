@@ -17,8 +17,4 @@
     <ProjectReference Include="..\MovieStore.Data\MovieStore.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validatior\" />
-  </ItemGroup>
-
 </Project>

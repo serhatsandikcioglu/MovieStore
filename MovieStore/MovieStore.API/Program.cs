@@ -1,11 +1,15 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using MovieStore.Data.DataBase;
+using MovieStore.Data.DTOs;
+using MovieStore.Data.Entities;
 using MovieStore.Data.Interfaces;
 using MovieStore.Data.Repositories;
 using MovieStore.Service;
 using MovieStore.Service.Interfaces;
 using MovieStore.Service.Mapper;
 using MovieStore.Service.Services;
+using MovieStore.Service.Validatior;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +28,12 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(MapperProfile));
+builder.Services.AddScoped<IValidator<ActorCreateDTO>, ActorCreateDTOValidator>();
+builder.Services.AddScoped<IValidator<ActorUpdateDTO>, ActorUpdateDTOValidator>();
+builder.Services.AddScoped<IValidator<DirectorCreateDTO>, DirectorCreateDTOValidator>();
+builder.Services.AddScoped<IValidator<DirectorUpdateDTO>, DirectorUpdateDTOValidator>();
+builder.Services.AddScoped<IValidator<MovieCreateDTO>, MovieCreateDTOValidator>();
+builder.Services.AddScoped<IValidator<MovieUpdateDTO>, MovieUpdateDTOValidator>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

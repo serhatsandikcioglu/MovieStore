@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 using MovieStore.Data.DTOs;
 using MovieStore.Data.Entities;
