@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieStore.Data.DataBase;
 using MovieStore.Data.Interfaces;
 using MovieStore.Data.Repositories;
+using MovieStore.Service;
 using MovieStore.Service.Interfaces;
 using MovieStore.Service.Mapper;
 using MovieStore.Service.Services;
@@ -34,6 +35,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseLoggingMiddleware();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

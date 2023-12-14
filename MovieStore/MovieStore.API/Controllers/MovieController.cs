@@ -13,10 +13,12 @@ namespace MovieStore.API.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly IDirectorService _directorService;
 
-        public MovieController(IMovieService movieService)
+        public MovieController(IMovieService movieService, IDirectorService directorService)
         {
             _movieService = movieService;
+            _directorService = directorService;
         }
         [HttpGet]
         public IActionResult GetAll([FromQuery] string? sort, int page = 1, int size = 10)
@@ -38,8 +40,13 @@ namespace MovieStore.API.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] MovieCreateDTO movieCreateDTO)
         {
+            bool directorExist = _directorService.IsExist(movieCreateDTO.DirectorId);
+            if (directorExist)
+            {
             MovieViewModel movieViewModel = _movieService.Add(movieCreateDTO);
             return CreatedAtAction(nameof(GetById), new { id = movieViewModel.Id }, movieViewModel);
+            }
+            return NotFound();
         }
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] MovieUpdateDTO movieUpdateDTO)
