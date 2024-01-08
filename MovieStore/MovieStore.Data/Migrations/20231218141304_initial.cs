@@ -47,7 +47,7 @@ namespace MovieStore.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FavoriteCategories = table.Column<int[]>(type: "integer[]", nullable: false),
+                    FavoriteCategories = table.Column<int[]>(type: "integer[]", nullable: true),
                     Balance = table.Column<decimal>(type: "numeric", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -199,17 +199,11 @@ namespace MovieStore.Data.Migrations
                     Year = table.Column<int>(type: "integer", nullable: false),
                     Category = table.Column<int>(type: "integer", nullable: false),
                     DirectorId = table.Column<int>(type: "integer", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    AppUserId = table.Column<int>(type: "integer", nullable: true)
+                    Price = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Movies_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Movies_Directors_DirectorId",
                         column: x => x.DirectorId,
@@ -237,6 +231,30 @@ namespace MovieStore.Data.Migrations
                     table.ForeignKey(
                         name: "FK_ActorMovie_Movies_ActedInMoviesId",
                         column: x => x.ActedInMoviesId,
+                        principalTable: "Movies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUserMovie",
+                columns: table => new
+                {
+                    PurchasedMoviesId = table.Column<int>(type: "integer", nullable: false),
+                    UsersId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUserMovie", x => new { x.PurchasedMoviesId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_AppUserMovie_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppUserMovie_Movies_PurchasedMoviesId",
+                        column: x => x.PurchasedMoviesId,
                         principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -276,6 +294,11 @@ namespace MovieStore.Data.Migrations
                 column: "ActorsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppUserMovie_UsersId",
+                table: "AppUserMovie",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -313,11 +336,6 @@ namespace MovieStore.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_AppUserId",
-                table: "Movies",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Movies_DirectorId",
                 table: "Movies",
                 column: "DirectorId");
@@ -338,6 +356,9 @@ namespace MovieStore.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ActorMovie");
+
+            migrationBuilder.DropTable(
+                name: "AppUserMovie");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -364,10 +385,10 @@ namespace MovieStore.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Movies");
 
             migrationBuilder.DropTable(
                 name: "Directors");

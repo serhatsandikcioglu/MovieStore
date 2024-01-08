@@ -14,7 +14,7 @@ namespace MovieStore.Service.Interfaces
     {
         List<MovieViewModel> GetAll(string? sort, int page, int size);
         void Delete(int id);
-        void Update(MovieUpdateDTO movieUpdateDTO);
+        void Update(int id, MovieUpdateDTO movieUpdateDTO);
         MovieViewModel Add(MovieCreateDTO movieCreateDTO);
         MovieViewModel GetById(int id);
         void Patch(int id, JsonPatchDocument<Movie> patchDoc);

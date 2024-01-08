@@ -69,8 +69,7 @@ namespace MovieStore.API.Controllers
             bool movieExist = _movieService.IsExist(id);
             if (movieExist)
             {
-                movieUpdateDTO.Id = id;
-                _movieService.Update(movieUpdateDTO);
+                _movieService.Update(id ,movieUpdateDTO);
                 return Ok();
             }
             return NotFound();

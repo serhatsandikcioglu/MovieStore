@@ -9,9 +9,7 @@ namespace MovieStore.Data.ViewModels
 {
     public class OrderViewModel
     {
-        public int Id { get; set; }
-        public int AppUserId { get; set; }
-        public int MovieId { get; set; }
+        public string MovieName { get; set; }
         public decimal Price { get; set; }
         public DateTime CreatedDate { get; set; }
     }

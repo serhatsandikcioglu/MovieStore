@@ -11,7 +11,6 @@ namespace MovieStore.Data.DTOs
 {
     public class MovieUpdateDTO
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }
         public Category Category { get; set; }

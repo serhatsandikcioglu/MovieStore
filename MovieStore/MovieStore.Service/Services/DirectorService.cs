@@ -8,6 +8,7 @@ using MovieStore.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,8 +56,8 @@ namespace MovieStore.Service.Services
 
         public void Update(int id ,DirectorUpdateDTO directorUpdateDTO)
         {
-            Director director = _mapper.Map<Director>(directorUpdateDTO);
-            director.Id = id;
+            Director director = _unitOfWork.DirectorRepository.GetById(id);
+            _mapper.Map(directorUpdateDTO, director);
             _unitOfWork.DirectorRepository.Update(director);
             _unitOfWork.SaveChanges();
         }

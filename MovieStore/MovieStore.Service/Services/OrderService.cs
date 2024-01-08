@@ -53,9 +53,10 @@ namespace MovieStore.Service.Services
             return orderViewModel;
         }
 
-        public void Update(OrderUpdateDTO orderUpdateDTO)
+        public void Update(int id ,OrderUpdateDTO orderUpdateDTO)
         {
-            Order order = _mapper.Map<Order>(orderUpdateDTO);
+            Order order = _unitOfWork.OrderRepository.GetById(id);
+            _mapper.Map(orderUpdateDTO, order);
             _unitOfWork.OrderRepository.Update(order);
             _unitOfWork.SaveChanges();
         }

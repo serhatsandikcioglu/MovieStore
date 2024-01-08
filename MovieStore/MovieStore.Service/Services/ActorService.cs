@@ -57,9 +57,8 @@ namespace MovieStore.Service.Services
 
         public void Update(int id ,ActorUpdateDTO actorUpdateDTO)
         {
-            Actor actor = _mapper.Map<Actor>(actorUpdateDTO);
-            actor.Id = id;
-            _unitOfWork.ActorRepository.Update(actor);
+            Actor actor = _unitOfWork.ActorRepository.GetById(id);
+            _mapper.Map(actorUpdateDTO, actor);
             _unitOfWork.SaveChanges();
         }
         public void Patch(int id, JsonPatchDocument<Actor> patchDoc)

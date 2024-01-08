@@ -17,8 +17,9 @@ namespace MovieStore.Data.Entities
         public int DirectorId { get; set; }
         public Director Director { get; set; }
         public List<Actor> Actors { get; set; }
+        public List<AppUser>? Users { get; set; }
         public decimal Price { get; set; }
-    public Movie()
+        public Movie()
     {
         Actors = new List<Actor>();
     }

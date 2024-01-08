@@ -61,9 +61,10 @@ namespace MovieStore.Service.Services
             return movieViewModel;
         }
 
-        public void Update(MovieUpdateDTO movieUpdateDTO)
+        public void Update(int id ,MovieUpdateDTO movieUpdateDTO)
         {
-            Movie movie = _mapper.Map<Movie>(movieUpdateDTO);
+            Movie movie = _unitOfWork.MovieRepository.GetById(id);
+            _mapper.Map(movieUpdateDTO, movie);
             _unitOfWork.MovieRepository.Update(movie);
             _unitOfWork.SaveChanges();
         }

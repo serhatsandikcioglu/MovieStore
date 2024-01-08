@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MovieStore.Data.Entities
+namespace MovieStore.Data.ViewModels
 {
-    public class Actor
+    public class UserViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public List<Movie>? ActedInMovies { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
     }
 }

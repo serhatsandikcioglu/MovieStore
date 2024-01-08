@@ -37,6 +37,21 @@ namespace MovieStore.Data.Migrations
                     b.ToTable("ActorMovie");
                 });
 
+            modelBuilder.Entity("AppUserMovie", b =>
+                {
+                    b.Property<int>("PurchasedMoviesId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PurchasedMoviesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("AppUserMovie");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -216,7 +231,6 @@ namespace MovieStore.Data.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<int[]>("FavoriteCategories")
-                        .IsRequired()
                         .HasColumnType("integer[]");
 
                     b.Property<bool>("LockoutEnabled")
@@ -293,9 +307,6 @@ namespace MovieStore.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Category")
                         .HasColumnType("integer");
 
@@ -313,8 +324,6 @@ namespace MovieStore.Data.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("DirectorId");
 
@@ -361,6 +370,21 @@ namespace MovieStore.Data.Migrations
                     b.HasOne("MovieStore.Data.Entities.Actor", null)
                         .WithMany()
                         .HasForeignKey("ActorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AppUserMovie", b =>
+                {
+                    b.HasOne("MovieStore.Data.Entities.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("PurchasedMoviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieStore.Data.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -418,10 +442,6 @@ namespace MovieStore.Data.Migrations
 
             modelBuilder.Entity("MovieStore.Data.Entities.Movie", b =>
                 {
-                    b.HasOne("MovieStore.Data.Entities.AppUser", null)
-                        .WithMany("PurchasedMovies")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("MovieStore.Data.Entities.Director", "Director")
                         .WithMany("DirectedMovies")
                         .HasForeignKey("DirectorId")
@@ -448,11 +468,6 @@ namespace MovieStore.Data.Migrations
                     b.Navigation("AppUser");
 
                     b.Navigation("Movie");
-                });
-
-            modelBuilder.Entity("MovieStore.Data.Entities.AppUser", b =>
-                {
-                    b.Navigation("PurchasedMovies");
                 });
 
             modelBuilder.Entity("MovieStore.Data.Entities.Director", b =>

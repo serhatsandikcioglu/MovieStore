@@ -30,6 +30,10 @@ namespace MovieStore.Service.Mapper
             CreateMap<Order, OrderViewModel>().ReverseMap();
             CreateMap<Order, OrderCreateDTO>().ReverseMap();
             CreateMap<Order, OrderUpdateDTO>().ReverseMap();
+
+            CreateMap<AppUser, UserViewModel>().ReverseMap();
+            CreateMap<AppUser, UserCreateDTO>().ReverseMap();
+
         }
     }
 }
